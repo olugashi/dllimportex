@@ -1,4 +1,4 @@
-//#pragma once
+#pragma pack(push, 1)
 
 #include <iostream>
 using namespace std;
@@ -17,12 +17,6 @@ struct TestStruct { // note typedef is not needed */
 struct TestStructPtr { // note typedef is not needed */
     int length;
     int *values; // specified the size
-
-public:
-    TestStructPtr()
-    {
-
-    }
 };
  
 
@@ -40,5 +34,7 @@ extern "C" TEST_LIBRARY void TestPoint(PointStruct p);
 extern "C" TEST_LIBRARY void TestArray(TestStruct *p);
 //extern "C" TEST_LIBRARY TestStructPtr* TestReturnArrayPtr();
 //extern "C" TEST_LIBRARY void TestReturnArrayPtr(TestStructPtr** ptr);
-extern "C" TEST_LIBRARY TestStructPtr* TestReturnArrayPtr(TestStructPtr* prt);
+extern "C" TEST_LIBRARY TestStructPtr __stdcall TestReturnArrayPtr();
+
 //extern "C" TEST_LIBRARY TestStruct* TestArray();
+#pragma pack(pop)

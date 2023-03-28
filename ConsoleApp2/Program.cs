@@ -14,8 +14,8 @@ namespace ConsoleApp2
         [DllImport("NativeCppDll.dll")]
         static extern void TestArray(ref int[] arr);
 
-        [DllImport("NativeCppDll.dll")]
-        static extern IntPtr TestReturnArrayPtr(IntPtr ptr);
+        [DllImport("NativeCppDll.dll", CallingConvention = CallingConvention.StdCall)]
+        static extern TestStructPtr TestReturnArrayPtr();
 
 
         static void Main(string[] args)
@@ -36,20 +36,24 @@ namespace ConsoleApp2
             int size = Marshal.SizeOf(typeof(TestStruct));
 
 
-            IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(TestStruct)));
-            var data = new TestStructPtr();
+            //IntPtr pnt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(TestStruct)));
+            //var data = new TestStructPtr();
 
-            data.values = new int[10];
+            //data.values = new int[10];
 
             /*for (int i = 0; i < 10; i++)
             {
                 data1.values[i] = i;
             }*/
-            Marshal.StructureToPtr(data, pnt, false);
+            //Marshal.StructureToPtr(data, pnt, false);
 
-            var ptr =TestReturnArrayPtr(pnt);
+            
+            var data = TestReturnArrayPtr();
 
-            var ver = Marshal.PtrToStructure(ptr, typeof(TestStructPtr));
+            int[] myArray = new int[10];
+            Marshal.Copy(data.values, myArray, 0, 10);
+
+            // var ver = Marshal.PtrToStructure(ptr, typeof(TestStructPtr));
 
             Console.WriteLine("Hello, World!");
         }
@@ -72,12 +76,12 @@ namespace ConsoleApp2
 
     }
     
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct TestStructPtr
     { // note typedef is not needed */
         public int length;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-        public int[] values; // specified the size
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+        public IntPtr values; 
        
     };
 }

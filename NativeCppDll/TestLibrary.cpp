@@ -24,20 +24,20 @@ void TestArray(TestStruct *p)
 	return;
 }
 
-TestStructPtr* TestReturnArrayPtr(TestStructPtr* prt)
+TestStructPtr __stdcall TestReturnArrayPtr()
 {
-	TestStructPtr* p = new TestStructPtr();
+	TestStructPtr* myStruct = new TestStructPtr();
 
-	p->length = 5;
-	p->values = new int[10];
-	/*(*ptr)->length = 5;
-	
-	(*ptr)->values = new int[10];
-	*/
-	for (size_t i = 0; i < 10; i++)
-	{
-		p->values[i]= i;
+	// Allocate an array of integers
+	int* myArray = new int[10];
+	for (int i = 0; i < 10; i++) {
+		myArray[i] = i + 1;
 	}
 
-	return p;
+	// Assign the array pointer to the struct
+	myStruct->values = myArray;
+
+	// Return the struct
+	return myStruct[0];
+
 }
